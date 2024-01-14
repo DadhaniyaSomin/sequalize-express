@@ -1,54 +1,28 @@
-// const { DataTypes } = require('sequelize');
-// // const sequelize = new Sequelize('sqlite::memory:'); to connect data and we can use this it every files  files
-// const sequelize = require("./index");
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-    const User = sequelize.define('User', {    // User Model name
-        // Model attributes are defined here
-        firstName: {
-            type: DataTypes.STRING,
-            allowNull: false
-        },
-        lastName: {
-            type: DataTypes.STRING,
-            defaultValue: "LAST NAME"
-            // allowNull defaults to true
-        },
-        // fullName : {
-        //    type : DataTypes.VIRTUAL,
-        //    get(){
-        //      return `${this.firstName} ${this.lastName}`
-        //    },
-        //    set(value){
-        //       throw new Error('Cannot set');
-        //    }
-        // },
-        password : {
-             type : DataTypes.STRING,
-             allowNull: false
-        },
-        set(value)
-        {
-            this.setDataValue('password', hash(value));
-        }
-    }, {
-        // Other model options go here
-        // sequelize, // We need to pass the connection instance
-        // modelName: 'User' // We need to choose the model name
-        tableName: 'user',
-        // timestamps : false, //
-        createdAt: false, //]
-        updatedAt: "lastUpdate"
-
-    });
-
-    // // INSTEAD OF VIRTUAL FUNCTION U CAN ALSO USE THIS
-    // User.prototype.getFullName = function () {
-    //     return `${this.firstName} ${this.lastName}`;
-    // };
-
-    return User;
-}
-
-
-// `sequelize.define` also returns the model
-// console.log(User === sequelize.models.User); // true
+  class User extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
+    static associate(models) {
+      // define association here
+    }
+  }
+  User.init(
+    {
+      email: DataTypes.STRING,
+      password: DataTypes.STRING,
+      salt: DataTypes.STRING,
+      admin: DataTypes.BOOLEAN,
+      username: DataTypes.STRING,
+    },
+    {
+      sequelize,
+      modelName: "User",
+    }
+  );
+  return User;
+};
